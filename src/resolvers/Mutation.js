@@ -42,15 +42,17 @@ export const login = async (parent, { email, password }, context, info) => {
 
 export const post = async (parent, { url, description }, context, info) => {
   const { userId } = context;
-  console.log("USER ID", userId);
-  //   console.log("CONTEXT", context);
-  return await context.prisma.link.create({
+
+  const newLink = await context.prisma.link.create({
     data: {
       url: url,
       description: description,
       postedBy: { connect: { id: userId } },
     },
   });
+  context.pubsub.publish("NEW_LINK", newLink);
+
+  return newLink;
 };
 
 export const updateLink = async (parent, { id, url, description }, context) => {

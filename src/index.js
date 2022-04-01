@@ -1,4 +1,4 @@
-import { ApolloServer } from "apollo-server";
+import { ApolloServer, PubSub } from "apollo-server";
 import fs from "fs";
 
 import path, { dirname } from "path";
@@ -10,14 +10,17 @@ import * as Mutation from "./resolvers/Mutation.js";
 import * as User from "./resolvers/User.js";
 import * as Link from "./resolvers/Link.js";
 import * as Query from "./resolvers/Query.js";
+import * as Subscription from "./resolvers/Subscription.js";
 
 const resolvers = {
   Query,
   Mutation,
+  Subscription,
   User,
   Link,
 };
 
+const pubsub = new PubSub();
 const prisma = new PrismaClient.PrismaClient();
 // 3
 const __filename = fileURLToPath(import.meta.url);
@@ -32,6 +35,7 @@ const server = new ApolloServer({
     return {
       ...req,
       prisma,
+      pubsub,
       userId: req && req.headers.authorization ? getUserId(req) : null,
     };
   },
