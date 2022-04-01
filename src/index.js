@@ -20,6 +20,8 @@ const resolvers = {
   Link,
 };
 
+// TODO Adding a voting feature from https://www.howtographql.com/graphql-js/7-subscriptions/
+
 const pubsub = new PubSub();
 const prisma = new PrismaClient.PrismaClient();
 // 3
