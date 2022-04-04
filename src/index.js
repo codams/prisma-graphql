@@ -11,6 +11,7 @@ import * as User from "./resolvers/User.js";
 import * as Link from "./resolvers/Link.js";
 import * as Query from "./resolvers/Query.js";
 import * as Subscription from "./resolvers/Subscription.js";
+import * as Vote from "./resolvers/Vote.js";
 
 const resolvers = {
   Query,
@@ -18,9 +19,8 @@ const resolvers = {
   Subscription,
   User,
   Link,
+  Vote,
 };
-
-// TODO Adding a voting feature from https://www.howtographql.com/graphql-js/7-subscriptions/
 
 const pubsub = new PubSub();
 const prisma = new PrismaClient.PrismaClient();

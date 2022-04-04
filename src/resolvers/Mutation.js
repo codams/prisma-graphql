@@ -77,3 +77,29 @@ export const deleteLink = async (parent, { id }, context) => {
       return context.prisma.link.findMany();
     });
 };
+
+export const vote = async (parent, args, context, info) => {
+  const userId = context.userId;
+
+  const vote = await context.prisma.vote.findUnique({
+    where: {
+      linkId_userId: {
+        linkId: parseInt(args.linkId),
+        userId: parseInt(userId),
+      },
+    },
+  });
+  if (!!vote) {
+    throw new Error(`Already voted for link: ${args.linkId}`);
+  }
+
+  const newVote = context.prisma.vote.create({
+    data: {
+      user: { connect: { id: userId } },
+      link: { connect: { id: Number(args.linkId) } },
+    },
+  });
+  context.pubsub.publish("NEW_VOTE", newVote);
+
+  return newVote;
+};

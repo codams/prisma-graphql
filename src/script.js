@@ -10,7 +10,6 @@ async function main() {
       url: "www.howtographql.com",
     },
   });
-  console.log(allLinks);
 }
 
 main()
